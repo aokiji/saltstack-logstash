@@ -1,0 +1,27 @@
+version: "2.4"
+services:
+  logstash:
+    image: docker.elastic.co/logstash/logstash-oss:7.8.0
+    volumes:
+      - ./pipeline:/usr/share/logstash/pipeline:ro
+    ports:
+      - "9999:9999/udp"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9600"]
+  saltstack-py3:
+    build:
+      context: .
+      args:
+        salt_version: 2019.2
+    depends_on:
+      logstash:
+        condition: service_healthy
+  saltstack-py2:
+    build:
+      context: .
+      args:
+        python_version: apt
+        salt_version: 2019.2
+    depends_on:
+      logstash:
+        condition: service_healthy
