@@ -5,7 +5,7 @@ case "$1" in
     salt-master -d;
     retry=0
     until [ $retry -ge 5 ]; do
-      salt-run salt.cmd log.error "executing $SALT_TAG" && break
+      salt-run salt.cmd log.error "executing $SALT_TAG" && exit 0
       sleep 5
     done
     echo "Couldnt log message" >&2

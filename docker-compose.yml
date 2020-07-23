@@ -25,3 +25,7 @@ services:
     depends_on:
       logstash:
         condition: service_healthy
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
